@@ -1,5 +1,5 @@
 const url = {
-  BASE: 'http://localhost:3002/api'
+  BASE: 'https://chat-shivaluma.herokuapp.com/api'
 };
 
 export default url;
