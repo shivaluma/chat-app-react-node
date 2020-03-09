@@ -1,17 +1,22 @@
 import React from 'react';
 
-import Avatar from '../../../assets/images/avatar.jpg';
+import getAvatar from '../../../configs/getAvatar';
 
 const Panel = () => {
+  const doLogout = () => {};
+
   return (
     <div className='h-20 bg-white flex justify-between '>
       <div className='flex h-full items-center'>
-        <img src={Avatar} className='w-20 h-20 rounded-full p-4 ' />
-        <h1 className='font-semibold text-2xl'>Chat</h1>
+        <img
+          src={getAvatar(localStorage.username)}
+          className='w-20 h-20 rounded-full p-4 '
+        />
+        <h1 className='hidden md:flex font-semibold text-2xl'>Chat</h1>
       </div>
 
-      <div className='flex h-full items-center'>
-        <button className='bg-gray-200 rounded-full p-2 mr-2'>
+      <div className='hidden md:flex h-full items-center'>
+        <button className='bg-gray-200 rounded-full p-2 mr-2 focus:outline-none'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='24'
@@ -23,7 +28,10 @@ const Panel = () => {
           </svg>
         </button>
 
-        <button className='bg-gray-200 rounded-full p-2 mr-2'>
+        <button
+          className='bg-gray-200 rounded-full p-2 mr-2 focus:outline-none'
+          onClick={doLogout}
+        >
           <svg height='24' width='24' viewBox='0 0 36 36'>
             <g
               id='compose'

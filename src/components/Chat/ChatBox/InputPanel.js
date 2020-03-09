@@ -1,17 +1,55 @@
-import React from 'react';
+import React, { useRef, useContext } from 'react';
+import request from 'request';
+import url from '../../../configs/url';
+import { GlobalContext } from '../../../contexts/ConversationState';
 
-const InputPanel = () => {
+const InputPanel = ({ cid, uid }) => {
+  const chatFieldRef = useRef(null);
+  const { updateConversation, updateRefresh } = useContext(GlobalContext);
+  const sendMessage = () => {
+    const content = chatFieldRef.current.value;
+    if (!content || content === '') return;
+    const options = {
+      uri: `${url.LOCAL}/api/send-message`,
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.chattoken}`
+      },
+      body: JSON.stringify({
+        cid: cid,
+        uid: uid,
+        content: content,
+        username: localStorage.username
+      })
+    };
+
+    request.post(options, function(err, httpResponse, body) {
+      if (httpResponse.statusCode !== 200) {
+        console.log('Send failed');
+      } else {
+        chatFieldRef.current.value = '';
+        console.log('Send success');
+        const obj = JSON.parse(body);
+        updateConversation(obj.conversation);
+        updateRefresh();
+      }
+    });
+  };
+
   return (
     <div className='w-full h-16 bg-white flex p-2'>
       <input
         type='search'
-        className='flex-grow flex-shrink px-4 py-4 bg-gray-300 text-gray-900 rounded-full outline-none'
+        ref={chatFieldRef}
+        className='flex-grow flex-shrink px-4 py-4 bg-gray-300 text-gray-900 rounded-full outline-none truncate'
         placeholder='Input your message...'
       />
 
       <button
-        className='flex-shrink-0 mx-2 bg-blue-400 rounded-full flex items-center justify-center text-white outline-none'
+        className='flex-shrink-0 mx-2 bg-blue-400 rounded-full flex items-center justify-center text-white focus:outline-none'
         style={{ flexBasis: 100 }}
+        onClick={sendMessage}
       >
         <span className='font-semibold mr-1 '>Send</span>
         <svg

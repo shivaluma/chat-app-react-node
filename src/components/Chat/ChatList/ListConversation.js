@@ -1,16 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Conversation from './Conversation';
-
+import SearchTile from './SearchTile';
+import url from '../../../configs/url';
+import request from 'request';
+import { GlobalContext } from '../../../contexts/ConversationState';
+import { history } from '../../../configs/browserHistory';
 const ListConversation = () => {
   const [isFocusing, updateFocusing] = useState(false);
+  const [searchResult, setSearchResult] = useState([]);
+
+  const { conversations, addConversation } = useContext(GlobalContext);
+
+  const myUsername = localStorage.username;
+  const myId = localStorage.userId;
 
   const searchOnFocus = () => {
     updateFocusing(true);
   };
 
-  const searchOutFocus = () => {
+  const searchOutFocus = event => {
+    event.target.value = '';
+    setSearchResult([]);
     updateFocusing(false);
   };
+
+  const searchPeople = event => {
+    const options = {
+      uri: url.LOCAL + `/api/search?s=${event.target.value}`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.chattoken}`
+      }
+    };
+    request.get(options, function(err, httpResponse, body) {
+      const objBody = JSON.parse(body);
+      if (httpResponse.statusCode !== 200) {
+        searchResult.length = 0;
+        return;
+      } else {
+        setSearchResult([...objBody.result]);
+      }
+    });
+  };
+
+  const openConversation = id => {
+    console.log('im here');
+    const options = {
+      uri: url.LOCAL + `/api/conversation?id1=${myId}&id2=${id}`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.chattoken}`
+      }
+    };
+
+    request.get(options, function(err, httpResponse, body) {
+      if (err) return;
+      console.log(httpResponse.statusCode);
+      if (httpResponse.statusCode === 200) {
+        const obj = JSON.parse(body);
+        addConversation(obj.conversation);
+        history.push(`/chat/${obj.conversation._id}`);
+      }
+    });
+  };
+
   return (
     <div className='bg-white flex flex-col items-center'>
       <div className='mx-2 w-full px-4 mt-1 flex items-center relative mb-4'>
@@ -27,17 +82,38 @@ const ListConversation = () => {
           placeholder='Search by name...'
           onFocus={searchOnFocus}
           onBlur={searchOutFocus}
+          onChange={searchPeople}
         />
       </div>
+
       {!isFocusing ? (
         <div className='w-full px-2'>
-          <Conversation />
-          <Conversation />
-          <Conversation />
-          <Conversation />
-          <Conversation />
+          {conversations.map(el => (
+            <Conversation
+              key={el._id}
+              conversation={el}
+              otherName={
+                myUsername === el.firstUserName
+                  ? el.secondUserName
+                  : el.firstUserName
+              }
+            />
+          ))}
         </div>
-      ) : null}
+      ) : (
+        <div className='w-full px-2'>
+          {searchResult.map(el => (
+            <div
+              key={el._id}
+              onClick={() => {
+                openConversation(el._id);
+              }}
+            >
+              <SearchTile username={el.username} />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

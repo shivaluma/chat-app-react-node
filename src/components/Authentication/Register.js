@@ -34,7 +34,7 @@ const Register = () => {
     setRegistering(true);
 
     const options = {
-      uri: url.BASE + '/register',
+      uri: url.LOCAL + '/api/register',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
