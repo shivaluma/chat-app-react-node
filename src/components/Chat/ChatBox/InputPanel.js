@@ -13,7 +13,7 @@ const InputPanel = ({ cid, uid }) => {
     if (!content || content === '') return;
     setSending(true);
     const options = {
-      uri: `${url.BASE}/api/send-message`,
+      uri: `${url.LOCAL}/api/send-message`,
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -36,7 +36,6 @@ const InputPanel = ({ cid, uid }) => {
         const obj = JSON.parse(body);
         updateConversation(obj.conversation);
         socket.emit('user-send-message', obj.conversation);
-        updateRefresh();
       }
       setSending(false);
     });
@@ -52,7 +51,7 @@ const InputPanel = ({ cid, uid }) => {
       />
 
       <button
-        className='flex-shrink-0 mx-2 bg-blue-400 rounded-full flex items-center justify-center text-white focus:outline-none'
+        className='flex-shrink-0 mx-2 bg-blue-400 rounded-full  focus:outline-none'
         style={{ flexBasis: 100 }}
         onClick={sendMessage}
         disabled={isSending}
@@ -60,7 +59,7 @@ const InputPanel = ({ cid, uid }) => {
         {isSending ? (
           <div className='spinner'>A</div>
         ) : (
-          <div>
+          <div className='flex items-center justify-center text-white '>
             <span className='font-semibold mr-1 '>Send</span>
             <svg
               className='h-4 w-4 fill-current'

@@ -5,10 +5,12 @@ export default (state, action) => {
     }
 
     case 'refresh': {
+      console.log('normal refresh');
       return { ...state, refresh: !state.refresh };
     }
 
     case 'update-single': {
+      console.log('update conversation refresh');
       const newArray = state.conversations.filter(
         obj => action.conversation._id !== obj._id
       );

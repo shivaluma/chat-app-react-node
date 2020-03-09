@@ -9,13 +9,13 @@ const SingleMessage = ({ message, myId }) => {
         className='h-8 w-8 self-end mr-2'
       />
       <div className='py-2 px-4 bg-gray-300 rounded-xl'>
-        <p className='text-black max-w-xs break-all'>{message.content}</p>
+        <p className='text-black max-w-xs break-words'>{message.content}</p>
       </div>
     </div>
   ) : (
     <div className='mx-3 mt-4 flex self-end'>
       <div className='py-2 px-4 bg-gray-900 rounded-xl  '>
-        <p className='text-white max-w-xs break-all'>{message.content}</p>
+        <p className='text-white max-w-xs break-words'>{message.content}</p>
       </div>
     </div>
   );

@@ -17,17 +17,9 @@ const MessageList = props => {
   const userId = localStorage.userId;
   const [messages, setMessages] = useState(cvs.messages);
   useEffect(() => {
-    setMessages(cvs.messages);
-    socket.on('receive-message', conversation => {
-      console.log('set on socket');
-      const cvs = getConversation(conversation._id);
-      if (cvs) {
-        if (cvs.lastSender === conversation.lastSender) return;
-        updateConversation(conversation);
-      } else {
-        addConversation(conversation);
-      }
-    });
+    if (cvs) {
+      setMessages(cvs.messages);
+    }
   }, [isReady, props.conversationId]);
 
   useEffect(() => {
@@ -38,6 +30,16 @@ const MessageList = props => {
   useEffect(() => {
     setMessages(cvs.messages || []);
     console.log('set on init');
+    socket.on('receive-message', conversation => {
+      console.log('set on socket');
+      const cvs = getConversation(conversation._id);
+      if (cvs) {
+        if (cvs.lastSender === conversation.lastSender) return;
+        updateConversation(conversation);
+      } else {
+        addConversation(conversation);
+      }
+    });
   }, []);
 
   useEffect(() => {

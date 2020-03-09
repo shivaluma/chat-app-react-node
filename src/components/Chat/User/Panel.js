@@ -9,7 +9,8 @@ const Panel = () => {
       <div className='flex h-full items-center'>
         <img
           src={getAvatar(localStorage.username)}
-          className='w-20 h-20 rounded-full p-4 '
+          className='w-20 h-20 rounded-full p-4'
+          alt='My avatar'
         />
         <h1 className='hidden md:flex font-semibold text-2xl'>Chat</h1>
       </div>

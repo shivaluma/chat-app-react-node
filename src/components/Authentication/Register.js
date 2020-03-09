@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import BackgroundImage from '../../assets/images/bg.jpg';
 import request from 'request';
 import url from '../../configs/url';
+import { history } from '../../configs/browserHistory';
 
 const Register = () => {
   const usernameRef = useRef(null);
@@ -10,6 +11,7 @@ const Register = () => {
   const confirmPassWordRef = useRef(null);
 
   const [isRegistering, setRegistering] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const Register = () => {
     setRegistering(true);
 
     const options = {
-      uri: url.BASE + '/api/register',
+      uri: url.LOCAL + '/api/register',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -50,6 +52,8 @@ const Register = () => {
         setErrorMessage(JSON.parse(body).message);
       } else {
         alert('Register successful as ' + info.username);
+        history.push('/');
+        setRegistering(false);
       }
     });
   };
@@ -138,14 +142,7 @@ const Register = () => {
                   </button>
                 </div>
                 <hr className='mb-6 border-t' />
-                <div className='text-center'>
-                  <a
-                    className='inline-block text-sm text-blue-500 align-baseline hover:text-blue-800'
-                    href='#'
-                  >
-                    Forgot Password?
-                  </a>
-                </div>
+
                 <div className='text-center'>
                   <Link
                     to='/'

@@ -1,6 +1,6 @@
 const url = {
   BASE: 'https://chat-shivaluma.herokuapp.com',
-  LOCAL: 'http://localhost:3002'
+  LOCAL: 'https://chat-shivaluma.herokuapp.com'
 };
 
 export default url;

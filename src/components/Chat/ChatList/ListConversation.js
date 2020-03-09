@@ -5,6 +5,7 @@ import url from '../../../configs/url';
 import request from 'request';
 import { GlobalContext } from '../../../contexts/ConversationState';
 import { history } from '../../../configs/browserHistory';
+import socket from '../../../configs/socket';
 const ListConversation = () => {
   const [isFocusing, updateFocusing] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
@@ -24,9 +25,18 @@ const ListConversation = () => {
     updateFocusing(false);
   };
 
+  useEffect(() => {
+    if (conversations) {
+      console.log('Emit join all chat room');
+      conversations.forEach(el => {
+        socket.emit('user-join-room', { roomId: el._id });
+      });
+    }
+  }, [conversations.length]);
+
   const searchPeople = event => {
     const options = {
-      uri: url.BASE + `/api/search?s=${event.target.value}`,
+      uri: url.LOCAL + `/api/search?s=${event.target.value}`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -47,7 +57,7 @@ const ListConversation = () => {
   const openConversation = id => {
     console.log('im here');
     const options = {
-      uri: url.BASE + `/api/conversation?id1=${myId}&id2=${id}`,
+      uri: url.LOCAL + `/api/conversation?id1=${myId}&id2=${id}`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
