@@ -11,7 +11,7 @@ const InputPanel = ({ cid, uid }) => {
     const content = chatFieldRef.current.value;
     if (!content || content === '') return;
     const options = {
-      uri: `${url.LOCAL}/api/send-message`,
+      uri: `${url.BASE}/api/send-message`,
       method: 'post',
       headers: {
         'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
 const url = {
-  BASE: 'https://chat-shivaluma.herokuapp.com/api',
+  BASE: 'https://chat-shivaluma.herokuapp.com',
   LOCAL: 'http://localhost:3002'
 };
 

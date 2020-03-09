@@ -30,7 +30,7 @@ const Login = props => {
     setLogginIn(true);
 
     const options = {
-      uri: url.LOCAL + '/api/login',
+      uri: url.BASE + '/api/login',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

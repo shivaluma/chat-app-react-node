@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import url from './url';
 
-const socket = io(url.LOCAL, {
+const socket = io(url.BASE, {
   reconnection: true,
   reconnectionDelay: 1000,
   reconnectionDelayMax: 5000,

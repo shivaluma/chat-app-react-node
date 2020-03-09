@@ -26,7 +26,7 @@ const ListConversation = () => {
 
   const searchPeople = event => {
     const options = {
-      uri: url.LOCAL + `/api/search?s=${event.target.value}`,
+      uri: url.BASE + `/api/search?s=${event.target.value}`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ const ListConversation = () => {
   const openConversation = id => {
     console.log('im here');
     const options = {
-      uri: url.LOCAL + `/api/conversation?id1=${myId}&id2=${id}`,
+      uri: url.BASE + `/api/conversation?id1=${myId}&id2=${id}`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -18,7 +18,7 @@ export const GlobalProvider = ({ children }) => {
   useEffect(() => {
     (async function fetchData() {
       const options = {
-        uri: `${url.LOCAL}/api/conversation-list?id=${localStorage.userId}`,
+        uri: `${url.BASE}/api/conversation-list?id=${localStorage.userId}`,
         method: 'get',
         headers: {
           'Content-Type': 'application/json',
