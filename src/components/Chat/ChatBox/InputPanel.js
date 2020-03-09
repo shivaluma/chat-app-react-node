@@ -7,7 +7,7 @@ import socket from '../../../configs/socket';
 const InputPanel = ({ cid, uid }) => {
   const chatFieldRef = useRef(null);
   const { updateConversation, updateRefresh } = useContext(GlobalContext);
-  const [ isSending, setSending ] = useState(false);
+  const [isSending, setSending] = useState(false);
   const sendMessage = () => {
     const content = chatFieldRef.current.value;
     if (!content || content === '') return;
@@ -57,15 +57,20 @@ const InputPanel = ({ cid, uid }) => {
         onClick={sendMessage}
         disabled={isSending}
       >
-        {isSending ? <div className='spinner'>A</div> : <span className='font-semibold mr-1 '>Send</span>
-        <svg
-          className='h-4 w-4 fill-current'
-          viewBox='0 0 1000 1000'
-          xmlns='http://www.w3.org/2000/svg'
-        >
-          <path d='M10,991.1l980-493.2L10,8.9l101.1,415.7l532.7,73.4l-532.7,70.5L10,991.1z' />
-        </svg>}
-        
+        {isSending ? (
+          <div className='spinner'>A</div>
+        ) : (
+          <div>
+            <span className='font-semibold mr-1 '>Send</span>
+            <svg
+              className='h-4 w-4 fill-current'
+              viewBox='0 0 1000 1000'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path d='M10,991.1l980-493.2L10,8.9l101.1,415.7l532.7,73.4l-532.7,70.5L10,991.1z' />
+            </svg>
+          </div>
+        )}
       </button>
     </div>
   );
