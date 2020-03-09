@@ -2,6 +2,7 @@ import React, { useRef, useContext } from 'react';
 import request from 'request';
 import url from '../../../configs/url';
 import { GlobalContext } from '../../../contexts/ConversationState';
+import socket from '../../../configs/socket';
 
 const InputPanel = ({ cid, uid }) => {
   const chatFieldRef = useRef(null);
@@ -32,6 +33,7 @@ const InputPanel = ({ cid, uid }) => {
         console.log('Send success');
         const obj = JSON.parse(body);
         updateConversation(obj.conversation);
+        socket.emit('user-send-message', obj.conversation);
         updateRefresh();
       }
     });

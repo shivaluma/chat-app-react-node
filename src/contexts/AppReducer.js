@@ -12,11 +12,15 @@ export default (state, action) => {
       const newArray = state.conversations.filter(
         obj => action.conversation._id !== obj._id
       );
-      return { ...state, conversations: [action.conversation, ...newArray] };
+      return {
+        ...state,
+        conversations: [action.conversation, ...newArray],
+        refresh: !state.refresh
+      };
     }
 
     case 'add': {
-      return { conversations: [...state.conversations, action.conversation] };
+      return { conversations: [action.conversation, ...state.conversations] };
     }
     default:
       return state;

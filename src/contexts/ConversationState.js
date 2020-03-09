@@ -31,8 +31,10 @@ export const GlobalProvider = ({ children }) => {
       // console.log(obj);
 
       request.get(options, function(err, httpResponse, body) {
-        if (err) history.replace('/');
-        if (httpResponse.statusCode !== 200) {
+        if (err || httpResponse.statusCode !== 200) {
+          localStorage.removeItem('chattoken');
+          localStorage.removeItem('username');
+          localStorage.removeItem('userId');
           history.replace('/');
         } else {
           const obj = JSON.parse(body);

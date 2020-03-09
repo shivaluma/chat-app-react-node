@@ -11,6 +11,7 @@ const Login = props => {
   const passwordRef = useRef(null);
 
   const [isLogginIn, setLogginIn] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -59,7 +60,9 @@ const Login = props => {
     });
   };
 
-  return (
+  return localStorage.getItem('chattoken') ? (
+    <Redirect to='/chat' push={true} />
+  ) : (
     <div className='h-screen overflow-hidden flex items-center justify-center bg-gray-200'>
       <div className='container mx-auto'>
         <div className='flex justify-center px-6 my-12'>
