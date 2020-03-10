@@ -14,6 +14,7 @@ const InputPanel = ({ cid, uid }) => {
   const myUsername = localStorage.username;
   const sendMessage = () => {
     const content = chatFieldRef.current.value;
+    chatFieldRef.current.value = '';
     if (!content || content === '') return;
     setSending(true);
     const options = {
@@ -35,7 +36,6 @@ const InputPanel = ({ cid, uid }) => {
       if (httpResponse.statusCode !== 200) {
         console.log('Send failed');
       } else {
-        chatFieldRef.current.value = '';
         console.log('Send success');
         const obj = JSON.parse(body);
         updateConversation(obj.conversation);
