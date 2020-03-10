@@ -9,7 +9,9 @@ const socket = io(url.LOCAL, {
 });
 
 socket.on('disconnect', () => {
-  socket.emit('user-setOffline', localStorage.userId);
+  if (localStorage.userId) {
+    socket.emit('user-setOffline', localStorage.userId);
+  }
 });
 
 export default socket;

@@ -11,6 +11,7 @@ const Conversation = ({ conversation, otherName }) => {
       <img
         src={getAvatar(otherName)}
         className='h-16 w-16 mx-4 p-1 rounded-full'
+        alt='avatar'
       />
       <div className='hidden md:flex flex-col h-full justify-center overflow-hidden'>
         <span className='font-semibold truncate'>{otherName}</span>

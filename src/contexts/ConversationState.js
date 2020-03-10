@@ -17,6 +17,7 @@ export const GlobalProvider = ({ children }) => {
 
   useEffect(() => {
     (async function fetchData() {
+      console.log('FETCH DATA');
       const options = {
         uri: `${url.LOCAL}/api/conversation-list?id=${localStorage.userId}`,
         method: 'get',
@@ -61,7 +62,7 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const getConversation = cid => {
-    return state.conversations.find(c => c._id == cid) || { messages: [] };
+    return state.conversations.find(c => c._id === cid) || { messages: [] };
   };
 
   return (

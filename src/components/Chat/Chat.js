@@ -15,7 +15,7 @@ const Chat = props => {
   return (
     <GlobalProvider>
       <div className='h-screen flex'>
-        <ChatList />
+        <ChatList chatId={chatId} />
         <ChatBox chatId={chatId} userId={userId} />
       </div>
     </GlobalProvider>

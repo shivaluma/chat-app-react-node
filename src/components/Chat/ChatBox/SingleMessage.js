@@ -1,10 +1,10 @@
 import React from 'react';
 import getAvatar from '../../../configs/getAvatar';
-const SingleMessage = ({ message, myId }) => {
+const SingleMessage = ({ message, myId, name }) => {
   return message.ofUser !== myId ? (
     <div className='flex mx-3 mt-4 max-w-xs'>
       <img
-        src={getAvatar(message.ofUser)}
+        src={getAvatar(name)}
         alt='avatar'
         className='h-8 w-8 self-end mr-2'
       />
