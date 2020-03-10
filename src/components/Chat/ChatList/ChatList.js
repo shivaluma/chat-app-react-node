@@ -98,6 +98,7 @@ const ChatList = props => {
         <ListConversation className='flex-grow' chatId={props.chatId} />
       ) : (
         <ListSearchTile
+          className='flex-grow'
           listResults={searchResult}
           setMouse={setMouseOverResult}
           openConversation={openConversation}

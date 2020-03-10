@@ -3,7 +3,11 @@ import SearchTile from './SearchTile';
 
 const ListSearchTile = ({ listResults, openConversation, setMouse }) => {
   return (
-    <div onMouseOver={() => setMouse(true)} onMouseOut={() => setMouse(false)}>
+    <div
+      className='px-2 overflow-y-auto'
+      onMouseOver={() => setMouse(true)}
+      onMouseOut={() => setMouse(false)}
+    >
       {listResults.map(result => (
         <SearchTile
           key={result._id}
