@@ -2,7 +2,7 @@ import React from 'react';
 
 const SearchBar = ({ searchOnFocus, searchOutFocus, searchPeople }) => {
   return (
-    <div className='mx-2 w-full px-4 mt-1 flex items-center relative mb-4'>
+    <div className='mx-2 w-full px-4 mt-1 hidden md:flex items-center relative mb-4'>
       <svg
         className='h-4 w-4 fill-current text-gray-700 absolute left ml-4'
         xmlns='http://www.w3.org/2000/svg'

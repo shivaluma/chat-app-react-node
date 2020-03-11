@@ -130,7 +130,11 @@ const Login = props => {
                     onClick={login}
                     disabled={isLogginIn}
                   >
-                    {isLogginIn ? <div className='spinner'>A</div> : 'Sign In'}
+                    {isLogginIn ? (
+                      <div className='spinner -mt-1 -ml-1'>A</div>
+                    ) : (
+                      'Sign In'
+                    )}
                   </button>
                 </div>
                 <hr className='mb-6 border-t' />

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Conversation from './Conversation';
 
 import { GlobalContext } from '../../../contexts/ConversationState';
@@ -34,7 +34,7 @@ const ListConversation = props => {
   }, [conversations.length]);
 
   return (
-    <div className='bg-white flex flex-col items-center overflow-y-auto'>
+    <div className='bg-white flex flex-col items-center overflow-y-auto flex-grow'>
       <div className='w-full px-2 overflow-y-auto'>
         {conversations.map(el => (
           <Conversation

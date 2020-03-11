@@ -15,12 +15,13 @@ const MessageList = props => {
   const [messages, setMessages] = useState([]);
   const [otherTyping, setOtherTyping] = useState(false);
   const [otherName, setOtherName] = useState('');
-  const [currentPage, setCurrentPage] = useState(0);
-  const [lastMessageId, setLastMessageId] = useState(0);
+  const [isLoading, setLoading] = useState(true);
+
   useEffect(() => {
+    setLoading(true);
     if (cvs._id) {
       const options = {
-        uri: `${url.LOCAL}/api/get-messages?cid=${cvs._id}&page=${currentPage}&last=${lastMessageId}`,
+        uri: `${url.LOCAL}/api/get-messages?cid=${cvs._id}`,
         method: 'get',
         headers: {
           'Content-Type': 'application/json',
@@ -32,6 +33,7 @@ const MessageList = props => {
         if (httpResponse.statusCode === 200) {
           const { messageList } = JSON.parse(body);
           setMessages(messageList);
+          setLoading(false);
         }
       });
       socket.on('user-typing', ({ cid, uid, isTyping, name }) => {
@@ -55,11 +57,11 @@ const MessageList = props => {
     }
   }, [newMessage]);
 
-  useEffect(() => {
-    if (messages.length > 0) {
-      setLastMessageId(messages[0]._id);
-    }
-  }, [messages]);
+  // useEffect(() => {
+  //   if (messages.length > 0) {
+  //     setLastMessageId(messages[0]._id);
+  //   }
+  // }, [messages]);
 
   useEffect(() => {
     animateScroll.scrollToBottom({
@@ -74,14 +76,18 @@ const MessageList = props => {
       className='bg-white flex-grow flex flex-col overflow-y-auto'
       id='messages'
     >
-      {messages.map(el => (
-        <SingleMessage
-          key={el._id || Date.now()}
-          name={props.name}
-          message={el}
-          myId={userId}
-        />
-      ))}
+      {isLoading ? (
+        <div className='spinner-md flex-grow'>A</div>
+      ) : (
+        messages.map(el => (
+          <SingleMessage
+            key={el._id || Date.now()}
+            name={props.name}
+            message={el}
+            myId={userId}
+          />
+        ))
+      )}
 
       {otherTyping ? <TypingIndicator name={otherName} /> : null}
     </div>
