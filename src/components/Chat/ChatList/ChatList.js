@@ -66,10 +66,9 @@ const ChatList = props => {
         const obj = JSON.parse(body);
 
         const newConversation = getConversation(obj.conversation._id);
-        if (newConversation.messages.length > 0) {
+        if (newConversation.lastMessage !== '') {
         } else {
           addConversation(obj.conversation);
-
           socket.emit('new-conversation', {
             conversation: obj.conversation,
             createId: localStorage.userId

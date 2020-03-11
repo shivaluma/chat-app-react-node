@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useState } from 'react';
+import React, { useRef, useContext, useState, useEffect } from 'react';
 import request from 'request';
 import url from '../../../configs/url';
 import { GlobalContext } from '../../../contexts/ConversationState';
@@ -6,12 +6,9 @@ import socket from '../../../configs/socket';
 
 const InputPanel = ({ cid, uid }) => {
   const chatFieldRef = useRef(null);
-  const { updateConversation, updateRefresh, addNewMessage } = useContext(
-    GlobalContext
-  );
+  const { updateConversation, addNewMessage } = useContext(GlobalContext);
   const [isSending, setSending] = useState(false);
-  const [chooseEmoji, setChooseEmoji] = useState(false);
-  let isTyping = false;
+
   let timeout = null;
   const myUsername = localStorage.username;
   const sendMessage = () => {
@@ -90,10 +87,7 @@ const InputPanel = ({ cid, uid }) => {
           placeholder='Input your message...'
         />
 
-        <button
-          className='focus:outline-none -ml-8'
-          onClick={() => setChooseEmoji(!chooseEmoji)}
-        >
+        <button className='focus:outline-none -ml-8'>
           <svg height='24px' width='24px' viewBox='0 0 26 26'>
             <g fill='none' fillRule='evenodd'>
               <polygon points='0,26 26,26 26,0 0,0 '></polygon>

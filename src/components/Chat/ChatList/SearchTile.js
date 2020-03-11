@@ -12,7 +12,7 @@ const SearchTile = props => {
         src={getAvatar(props.username)}
         className='h-12 w-12 mx-4 p-1 rounded-full'
         alt='avatar'
-      ></img>
+      />
       <div className='hidden md:flex flex-col h-full justify-center items-center overflow-hidden'>
         <span className='text-base truncate'>{props.username}</span>
       </div>

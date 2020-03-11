@@ -8,7 +8,9 @@ const initialState = {
   ready: false,
   sessionValid: true,
   refresh: false,
-  newMessage: { cid: '', message: {} }
+  newMessage: { cid: '', message: {} },
+  isEmojiShow: false,
+  inputEvent: {}
 };
 
 export const GlobalContext = createContext(initialState);
@@ -66,19 +68,31 @@ export const GlobalProvider = ({ children }) => {
     dispatch({ type: 'new-message', conversation, message });
   };
 
+  const toggleEmoji = status => {
+    dispatch({ type: 'toggle-emoji', status });
+  };
+
+  const updateInputEvent = inputEvent => {
+    dispatch({ type: 'update-input', inputEvent });
+  };
+
   return (
     <GlobalContext.Provider
       value={{
         conversations: state.conversations,
         newMessage: state.newMessage,
+        isEmojiShow: state.isEmojiShow,
         isReady: state.ready,
         refresh: state.refresh,
+        inputEvent: state.inputEvent,
         updateRefresh: updateRefresh,
         updateConversations: updateConversations,
         updateConversation: updateConversation,
         getConversation: getConversation,
         addConversation: addConversation,
-        addNewMessage: addNewMessage
+        addNewMessage: addNewMessage,
+        toggleEmoji: toggleEmoji,
+        updateInputEvent: updateInputEvent
       }}
     >
       {children}

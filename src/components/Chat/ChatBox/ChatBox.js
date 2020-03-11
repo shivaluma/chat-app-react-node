@@ -4,14 +4,15 @@ import MessageList from './MessageList';
 import InputPanel from './InputPanel';
 import { GlobalContext } from '../../../contexts/ConversationState';
 import socket from '../../../configs/socket';
-import EmojiPicker from 'emoji-picker-react';
+import EmojiPicker from './EmojiPicker';
 
 const ChatBox = ({ chatId, userId }) => {
   const {
     getConversation,
     updateConversation,
     addConversation,
-    addNewMessage
+    addNewMessage,
+    isEmojiShow
   } = useContext(GlobalContext);
   const cvs = getConversation(chatId);
   const otherUsername =
@@ -35,10 +36,7 @@ const ChatBox = ({ chatId, userId }) => {
       <TitleBar name={otherUsername} className='self-start' />
       <MessageList name={otherUsername} conversation={cvs} />
 
-      <div className='w-full px-4 mt-1 relative top-0 left-0'>
-        {/* <div className='absolute' style={{ right: 20, bottom: 60 }}>
-          <EmojiPicker />
-        </div> */}
+      <div className='w-full px-4 mt-1'>
         <InputPanel cid={chatId} uid={userId} className='w-7/8 self-end' />
       </div>
     </div>

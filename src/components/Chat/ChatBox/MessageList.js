@@ -15,11 +15,12 @@ const MessageList = props => {
   const [messages, setMessages] = useState([]);
   const [otherTyping, setOtherTyping] = useState(false);
   const [otherName, setOtherName] = useState('');
-
+  const [currentPage, setCurrentPage] = useState(0);
+  const [lastMessageId, setLastMessageId] = useState(0);
   useEffect(() => {
     if (cvs._id) {
       const options = {
-        uri: `${url.LOCAL}/api/get-messages?cid=${cvs._id}`,
+        uri: `${url.LOCAL}/api/get-messages?cid=${cvs._id}&page=${currentPage}&last=${lastMessageId}`,
         method: 'get',
         headers: {
           'Content-Type': 'application/json',
@@ -53,6 +54,12 @@ const MessageList = props => {
       }
     }
   }, [newMessage]);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      setLastMessageId(messages[0]._id);
+    }
+  }, [messages]);
 
   useEffect(() => {
     animateScroll.scrollToBottom({

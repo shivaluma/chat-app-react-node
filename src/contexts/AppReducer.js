@@ -4,6 +4,10 @@ export default (state, action) => {
       return { conversations: [...action.conversations], ready: true };
     }
 
+    case 'toggle-emoji': {
+      return { ...state, isEmojiShow: action.status };
+    }
+
     case 'refresh': {
       return { ...state, refresh: !state.refresh };
     }
@@ -21,6 +25,10 @@ export default (state, action) => {
 
     case 'add': {
       return { conversations: [action.conversation, ...state.conversations] };
+    }
+
+    case 'update-input': {
+      return { ...state, inputEvent: action.inputEvent };
     }
 
     case 'new-message': {

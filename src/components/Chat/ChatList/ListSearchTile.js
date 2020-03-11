@@ -4,7 +4,7 @@ import SearchTile from './SearchTile';
 const ListSearchTile = ({ listResults, openConversation, setMouse }) => {
   return (
     <div
-      className='px-2 overflow-y-auto'
+      className='px-2 mr-1 overflow-y-auto'
       onMouseOver={() => setMouse(true)}
       onMouseOut={() => setMouse(false)}
     >
