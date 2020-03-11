@@ -28,6 +28,39 @@
   width: 4px;
 }
 
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltipleft {
+  visibility: hidden;
+  width: 80px;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px 0;
+  position: absolute;
+  z-index: 1;
+  top: -3px;
+  right: 110%;
+}
+
+.tooltip .tooltipleft::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent black;
+}
+.tooltip:hover .tooltipleft {
+  visibility: visible;
+}
+
 @keyframes mercuryTypingAnimation {
   0% {
     transform: translateY(0px);

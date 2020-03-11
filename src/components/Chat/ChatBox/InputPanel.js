@@ -12,8 +12,8 @@ const InputPanel = ({ cid, uid }) => {
   let timeout = null;
   const myUsername = localStorage.username;
   const sendMessage = () => {
-    const content = chatFieldRef.current.value;
-    chatFieldRef.current.value = '';
+    const content = chatFieldRef.current.innerText;
+    chatFieldRef.current.innerText = '';
     if (!content || content === '') return;
     setSending(true);
     const options = {
@@ -61,12 +61,16 @@ const InputPanel = ({ cid, uid }) => {
   };
 
   return (
-    <div className='w-full h-16 bg-white flex p-2'>
-      <div className='flex-grow flex-shrink flex items-center'>
-        <input
-          type='search'
+    <div
+      className='w-full max-w-full bg-white flex p-2'
+      style={{ maxHeight: 400 }}
+    >
+      <div className='flex-grow flex-shrink items-center flex'>
+        <div
+          contentEditable={true}
+          tabIndex='0'
           ref={chatFieldRef}
-          className='px-4 py-2 w-full bg-gray-300 text-gray-900 rounded-full outline-none truncate'
+          className='px-4 py-3 w-full wrapper bg-gray-300 text-gray-900 focus:outline-none rounded-xl break-words overfl'
           onChange={() => {
             socket.emit('user-typing-message', {
               cid: cid,
@@ -77,8 +81,10 @@ const InputPanel = ({ cid, uid }) => {
             if (timeout) clearTimeout(timeout);
             timeout = setTimeout(stoppedTyping, 1500);
           }}
-          onKeyPress={event => {
-            if (event.key === 'Enter' || event.keyCode === 13) {
+          onKeyDown={event => {
+            if (event.shiftKey && event.key == 'Enter') {
+            } else if (event.key === 'Enter') {
+              event.preventDefault();
               sendMessage();
             }
           }}
@@ -99,7 +105,7 @@ const InputPanel = ({ cid, uid }) => {
       </div>
 
       <button
-        className='flex-shrink-0 my-1 mx-2 bg-blue-500 rounded-full  focus:outline-none'
+        className='flex-shrink-0 h-11 self-end py-3 mx-2 bg-blue-500 rounded-full focus:outline-none'
         style={{ flexBasis: 100 }}
         onClick={sendMessage}
         disabled={isSending}
@@ -107,7 +113,7 @@ const InputPanel = ({ cid, uid }) => {
         {isSending ? (
           <div className='spinner'>A</div>
         ) : (
-          <div className='flex items-center justify-center text-white '>
+          <div className='flex items-center justify-center text-white'>
             <span className='font-semibold mr-1 '>Send</span>
             <svg
               className='h-4 w-4 fill-current'
