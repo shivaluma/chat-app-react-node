@@ -61,7 +61,7 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const getConversation = cid => {
-    return state.conversations.find(c => c._id === cid) || { messages: [] };
+    return state.conversations.find(c => c._id === cid);
   };
 
   const addNewMessage = ({ conversation, message }) => {

@@ -14,7 +14,7 @@ const ChatBox = ({ chatId, userId }) => {
     addNewMessage,
     isEmojiShow
   } = useContext(GlobalContext);
-  const cvs = getConversation(chatId);
+  const cvs = getConversation(chatId) || 0;
   const otherUsername =
     (userId === cvs.firstId ? cvs.secondUserName : cvs.firstUserName) || '';
   useEffect(() => {
