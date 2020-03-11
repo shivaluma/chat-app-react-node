@@ -33,9 +33,7 @@ const InputPanel = ({ cid, uid }) => {
 
     request.post(options, function(err, httpResponse, body) {
       if (httpResponse.statusCode !== 200) {
-        console.log('Send failed');
       } else {
-        console.log('Send success');
         const obj = JSON.parse(body);
         addNewMessage({
           conversation: obj.conversation,

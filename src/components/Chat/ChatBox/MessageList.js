@@ -19,6 +19,7 @@ const MessageList = props => {
 
   useEffect(() => {
     setLoading(true);
+    setMessages([]);
     if (cvs._id) {
       const options = {
         uri: `${url.LOCAL}/api/get-messages?cid=${cvs._id}`,
@@ -69,7 +70,7 @@ const MessageList = props => {
       smooth: false,
       duration: 0
     });
-  }, [messages, otherTyping]);
+  }, [messages, otherTyping, isLoading]);
 
   return (
     <div

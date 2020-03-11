@@ -41,10 +41,6 @@ const Login = props => {
     };
 
     request.post(options, function(err, httpResponse, body) {
-      console.log('error', err);
-      console.log('http response', httpResponse.statusCode);
-      console.log('http response body ', httpResponse.body);
-      console.log('body', body);
       const objBody = JSON.parse(body);
       if (httpResponse.statusCode !== 200) {
         setLogginIn(false);
@@ -53,7 +49,7 @@ const Login = props => {
         localStorage.setItem('chattoken', objBody.token);
         localStorage.setItem('userId', objBody.user.id);
         localStorage.setItem('username', objBody.user.username);
-        console.log(socket);
+
         socket.emit('user-login', objBody.user.id);
         history.push('/chat');
       }

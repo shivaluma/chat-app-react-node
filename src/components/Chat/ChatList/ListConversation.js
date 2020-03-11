@@ -14,7 +14,6 @@ const ListConversation = props => {
 
   useEffect(() => {
     socket.on('add-new-conversation', ({ conversation, receiveId }) => {
-      console.log('add new conversation client');
       if (myId === receiveId) {
         addConversation(conversation);
       }
@@ -23,7 +22,6 @@ const ListConversation = props => {
 
   useEffect(() => {
     if (conversations) {
-      console.log('Emit join all chat room');
       conversations.forEach(el => {
         socket.emit('user-join-room', { roomId: el._id });
       });

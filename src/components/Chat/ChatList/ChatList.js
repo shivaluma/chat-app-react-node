@@ -37,19 +37,17 @@ const ChatList = props => {
   };
 
   const searchOnFocus = () => {
-    console.log('On focus');
     updateSearchFocusing(true);
     fetchPeople('');
   };
 
   const searchOutFocus = event => {
     event.target.value = '';
-    console.log('Out focus');
+
     updateSearchFocusing(false);
   };
 
   const openConversation = id => {
-    console.log('im here');
     const options = {
       uri: url.LOCAL + `/api/conversation?id1=${myId}&id2=${id}`,
       method: 'GET',
@@ -66,7 +64,6 @@ const ChatList = props => {
         const obj = JSON.parse(body);
 
         const newConversation = getConversation(obj.conversation._id);
-        console.log(newConversation);
         if (newConversation) {
         } else {
           addConversation(obj.conversation);

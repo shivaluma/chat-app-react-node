@@ -5,6 +5,7 @@ import InputPanel from './InputPanel';
 import { GlobalContext } from '../../../contexts/ConversationState';
 import socket from '../../../configs/socket';
 import EmojiPicker from './EmojiPicker';
+import { history } from '../../../configs/browserHistory';
 
 const ChatBox = ({ chatId, userId }) => {
   const {
@@ -12,24 +13,25 @@ const ChatBox = ({ chatId, userId }) => {
     updateConversation,
     addConversation,
     addNewMessage,
-    isEmojiShow
+    isReady
   } = useContext(GlobalContext);
-  const cvs = getConversation(chatId) || 0;
+  const cvs = getConversation(chatId);
   const otherUsername =
     (userId === cvs.firstId ? cvs.secondUserName : cvs.firstUserName) || '';
   useEffect(() => {
-    socket.on('receive-message', ({ conversation, newMessage }) => {
-      console.log('set on socket');
-      const cvs = getConversation(conversation._id);
-      if (cvs) {
-        if (cvs.lastSender === conversation.lastSender) return;
-        updateConversation(conversation);
-        addNewMessage({ conversation: conversation, message: newMessage });
-      } else {
-        addConversation(conversation);
-      }
-    });
-  }, []);
+    if (isReady) {
+      socket.on('receive-message', ({ conversation, newMessage }) => {
+        const cvs = getConversation(conversation._id);
+        if (cvs) {
+          if (localStorage.username === conversation.lastSender) return;
+          updateConversation(conversation);
+          addNewMessage({ conversation: conversation, message: newMessage });
+        } else {
+          addConversation(conversation);
+        }
+      });
+    }
+  }, [isReady]);
 
   return (
     <div className='flex-grow flex-shrink flex max-h-full border-l-2 border-gray-200 flex-col'>
