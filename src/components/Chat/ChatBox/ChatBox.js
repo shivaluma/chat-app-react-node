@@ -7,19 +7,23 @@ import socket from '../../../configs/socket';
 import EmojiPicker from 'emoji-picker-react';
 
 const ChatBox = ({ chatId, userId }) => {
-  const { getConversation, updateConversation, addConversation } = useContext(
-    GlobalContext
-  );
+  const {
+    getConversation,
+    updateConversation,
+    addConversation,
+    addNewMessage
+  } = useContext(GlobalContext);
   const cvs = getConversation(chatId);
   const otherUsername =
     (userId === cvs.firstId ? cvs.secondUserName : cvs.firstUserName) || '';
   useEffect(() => {
-    socket.on('receive-message', conversation => {
+    socket.on('receive-message', ({ conversation, newMessage }) => {
       console.log('set on socket');
       const cvs = getConversation(conversation._id);
       if (cvs) {
         if (cvs.lastSender === conversation.lastSender) return;
         updateConversation(conversation);
+        addNewMessage({ conversation: conversation, message: newMessage });
       } else {
         addConversation(conversation);
       }

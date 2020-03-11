@@ -7,7 +7,8 @@ const initialState = {
   conversations: [],
   ready: false,
   sessionValid: true,
-  refresh: false
+  refresh: false,
+  newMessage: { cid: '', message: {} }
 };
 
 export const GlobalContext = createContext(initialState);
@@ -26,10 +27,6 @@ export const GlobalProvider = ({ children }) => {
           Authorization: `Bearer ${localStorage.chattoken}`
         }
       };
-      // const response = await request.get(options);
-
-      // const obj = JSON.parse(response);
-      // console.log(obj);
 
       request.get(options, function(err, httpResponse, body) {
         if (err || httpResponse.statusCode !== 200) {
@@ -65,17 +62,23 @@ export const GlobalProvider = ({ children }) => {
     return state.conversations.find(c => c._id === cid) || { messages: [] };
   };
 
+  const addNewMessage = ({ conversation, message }) => {
+    dispatch({ type: 'new-message', conversation, message });
+  };
+
   return (
     <GlobalContext.Provider
       value={{
         conversations: state.conversations,
+        newMessage: state.newMessage,
         isReady: state.ready,
         refresh: state.refresh,
         updateRefresh: updateRefresh,
         updateConversations: updateConversations,
         updateConversation: updateConversation,
         getConversation: getConversation,
-        addConversation: addConversation
+        addConversation: addConversation,
+        addNewMessage: addNewMessage
       }}
     >
       {children}

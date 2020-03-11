@@ -6,7 +6,9 @@ import socket from '../../../configs/socket';
 
 const InputPanel = ({ cid, uid }) => {
   const chatFieldRef = useRef(null);
-  const { updateConversation, updateRefresh } = useContext(GlobalContext);
+  const { updateConversation, updateRefresh, addNewMessage } = useContext(
+    GlobalContext
+  );
   const [isSending, setSending] = useState(false);
   const [chooseEmoji, setChooseEmoji] = useState(false);
   let isTyping = false;
@@ -38,10 +40,18 @@ const InputPanel = ({ cid, uid }) => {
       } else {
         console.log('Send success');
         const obj = JSON.parse(body);
+        addNewMessage({
+          conversation: obj.conversation,
+          message: obj.newMessage
+        });
+
         updateConversation(obj.conversation);
         if (timeout) clearTimeout(timeout);
         stoppedTyping();
-        socket.emit('user-send-message', obj.conversation);
+        socket.emit('user-send-message', {
+          conversation: obj.conversation,
+          newMessage: obj.newMessage
+        });
       }
       setSending(false);
     });
@@ -63,7 +73,6 @@ const InputPanel = ({ cid, uid }) => {
           ref={chatFieldRef}
           className='px-4 py-2 w-full bg-gray-300 text-gray-900 rounded-full outline-none truncate'
           onChange={() => {
-            console.log('ON CHANGE');
             socket.emit('user-typing-message', {
               cid: cid,
               uid: uid,

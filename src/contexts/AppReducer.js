@@ -5,12 +5,10 @@ export default (state, action) => {
     }
 
     case 'refresh': {
-      console.log('normal refresh');
       return { ...state, refresh: !state.refresh };
     }
 
     case 'update-single': {
-      console.log('update conversation refresh');
       const newArray = state.conversations.filter(
         obj => action.conversation._id !== obj._id
       );
@@ -23,6 +21,13 @@ export default (state, action) => {
 
     case 'add': {
       return { conversations: [action.conversation, ...state.conversations] };
+    }
+
+    case 'new-message': {
+      return {
+        ...state,
+        newMessage: { cid: action.conversation._id, message: action.message }
+      };
     }
     default:
       return state;

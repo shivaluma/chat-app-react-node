@@ -4,19 +4,35 @@ import { animateScroll } from 'react-scroll';
 import { GlobalContext } from '../../../contexts/ConversationState';
 import socket from '../../../configs/socket';
 import TypingIndicator from './TypingIndicator';
+import url from '../../../configs/url';
+import request from 'request';
 
 const MessageList = props => {
-  const { isReady, refresh } = useContext(GlobalContext);
+  const { isReady, newMessage } = useContext(GlobalContext);
 
   const cvs = props.conversation;
   const userId = localStorage.userId;
-  const [messages, setMessages] = useState(cvs.messages);
+  const [messages, setMessages] = useState([]);
   const [otherTyping, setOtherTyping] = useState(false);
   const [otherName, setOtherName] = useState('');
 
   useEffect(() => {
-    if (cvs) {
-      setMessages(cvs.messages);
+    if (cvs._id) {
+      const options = {
+        uri: `${url.LOCAL}/api/get-messages?cid=${cvs._id}`,
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.chattoken}`
+        }
+      };
+
+      request.get(options, function(err, httpResponse, body) {
+        if (httpResponse.statusCode === 200) {
+          const { messageList } = JSON.parse(body);
+          setMessages(messageList);
+        }
+      });
       socket.on('user-typing', ({ cid, uid, isTyping, name }) => {
         if (cid === cvs._id && uid !== userId) {
           setOtherName(name);
@@ -28,12 +44,15 @@ const MessageList = props => {
         }
       });
     }
-  }, [isReady, props.conversation]);
+  }, [isReady, cvs._id]);
 
   useEffect(() => {
-    setMessages(cvs.messages);
-    console.log('set on refresh');
-  }, [refresh]);
+    if (cvs._id && newMessage) {
+      if (cvs._id === newMessage.cid) {
+        setMessages([...messages, newMessage.message]);
+      }
+    }
+  }, [newMessage]);
 
   useEffect(() => {
     animateScroll.scrollToBottom({
@@ -50,7 +69,7 @@ const MessageList = props => {
     >
       {messages.map(el => (
         <SingleMessage
-          key={el._id}
+          key={el._id || Date.now()}
           name={props.name}
           message={el}
           myId={userId}
