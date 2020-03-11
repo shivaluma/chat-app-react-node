@@ -2,18 +2,20 @@ import React from 'react';
 import getAvatar from '../../../configs/getAvatar';
 const SingleMessage = ({ message, myId, name }) => {
   const date = new Date(message.time);
-  const dateString = `${date.getHours()} : ${date.getMinutes()}`;
+  const dateString = `${date.getHours()} : ${date.getMinutes()} ${date.getDate()}/${date.getMonth() +
+    1}`;
   return message.ofUser !== myId ? (
-    <div className='flex mx-3 mt-4 max-w-xs'>
+    <div className='flex mx-3 mt-4 max-w-xs '>
       <img
         src={getAvatar(name)}
         alt='avatar'
         className='h-8 w-8 self-end mr-2'
       />
-      <div className='py-2 px-4 bg-gray-300 rounded-xl'>
+      <div className='py-2 px-4 bg-gray-300 rounded-xl tooltip'>
         <p className='text-black max-w-xs break-words whitespace-pre-line'>
           {message.content}
         </p>
+        <span className='tooltipright'>{dateString}</span>
       </div>
     </div>
   ) : (

@@ -30,7 +30,6 @@
 
 .tooltip {
   position: relative;
-  display: inline-block;
 }
 
 .tooltip .tooltipleft {
@@ -40,11 +39,25 @@
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  padding: 10px 0;
+  padding: 10px 5px;
   position: absolute;
   z-index: 1;
   top: -3px;
   right: 110%;
+}
+
+.tooltip .tooltipright {
+  visibility: hidden;
+  width: 80px;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px 5px;
+  position: absolute;
+  z-index: 1;
+  top: -3px;
+  left: 110%;
 }
 
 .tooltip .tooltipleft::after {
@@ -57,7 +70,23 @@
   border-style: solid;
   border-color: transparent transparent transparent black;
 }
+
+.tooltip .tooltipright::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent black transparent transparent;
+}
+
 .tooltip:hover .tooltipleft {
+  visibility: visible;
+}
+
+.tooltip:hover .tooltipright {
   visibility: visible;
 }
 
