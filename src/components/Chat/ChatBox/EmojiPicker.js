@@ -4,14 +4,7 @@ import { GlobalContext } from '../../../contexts/ConversationState';
 
 const EmojiPicker = () => {
   const { inputEvent } = useContext(GlobalContext);
-  return (
-    <Picker
-      onEmojiClick={(event, emoji) => {
-        console.log(emoji.emoji);
-        console.log(inputEvent);
-      }}
-    />
-  );
+  return <Picker onEmojiClick={(event, emoji) => {}} />;
 };
 
 export default EmojiPicker;

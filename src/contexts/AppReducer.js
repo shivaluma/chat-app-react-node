@@ -32,7 +32,6 @@ export default (state, action) => {
     }
 
     case 'new-message': {
-      console.log(action);
       return {
         ...state,
         newMessage: { cid: action.conversation._id, message: action.message }
