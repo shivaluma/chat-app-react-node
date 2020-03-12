@@ -99,7 +99,7 @@ const MessageList = props => {
       smooth: false,
       duration: 0
     });
-  }, [isLoading]);
+  }, [isLoading, newMessage]);
 
   return (
     <>

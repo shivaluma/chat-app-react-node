@@ -29,7 +29,7 @@ const Register = () => {
       setErrorMessage('Please input username and password.');
       return;
     } else if (info.password !== info.repassword) {
-      console.log(info.password, info.repassword);
+      
       setErrorMessage('Password do not match.');
       return;
     }
