@@ -114,7 +114,7 @@ const MessageList = props => {
         id='messages'
         ref={messageListRef}
         onScroll={e => {
-          if (e.target.scrollTop === 0) {
+          if (e.target.scrollTop === 0 && e.target.topHeight > 0) {
             if (lastIndex > 0) {
               setLoadingMore(true);
               loadMoreMessage(e);
