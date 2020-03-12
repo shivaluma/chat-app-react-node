@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import SingleMessage from './SingleMessage';
 import { animateScroll } from 'react-scroll';
 import { GlobalContext } from '../../../contexts/ConversationState';
@@ -16,13 +16,18 @@ const MessageList = props => {
   const [otherTyping, setOtherTyping] = useState(false);
   const [otherName, setOtherName] = useState('');
   const [isLoading, setLoading] = useState(true);
+  const [isLoadingMore, setLoadingMore] = useState(false);
+  const [lastIndex, setLastIndex] = useState(-1);
+
+  const messageListRef = useRef(null);
 
   useEffect(() => {
     setLoading(true);
     setMessages([]);
+
     if (cvs._id) {
       const options = {
-        uri: `${url.LOCAL}/api/get-messages?cid=${cvs._id}`,
+        uri: `${url.LOCAL}/api/get-messages?cid=${cvs._id}&last=-1`,
         method: 'get',
         headers: {
           'Content-Type': 'application/json',
@@ -32,8 +37,10 @@ const MessageList = props => {
 
       request.get(options, function(err, httpResponse, body) {
         if (httpResponse.statusCode === 200) {
-          const { messageList } = JSON.parse(body);
+          const { messageList, newLast } = JSON.parse(body);
           setMessages(messageList);
+          console.log(newLast);
+          setLastIndex(newLast);
           setLoading(false);
         }
       });
@@ -49,6 +56,28 @@ const MessageList = props => {
       });
     }
   }, [isReady, cvs._id]);
+
+  const loadMoreMessage = _ => {
+    if (lastIndex > 0) {
+      const options = {
+        uri: `${url.LOCAL}/api/get-messages?cid=${cvs._id}&last=${lastIndex}`,
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.chattoken}`
+        }
+      };
+
+      request.get(options, function(err, httpResponse, body) {
+        if (httpResponse.statusCode === 200) {
+          const { messageList, newLast } = JSON.parse(body);
+          setMessages([...messageList, ...messages]);
+          setLastIndex(newLast);
+          setLoadingMore(false);
+        }
+      });
+    }
+  };
 
   useEffect(() => {
     if (cvs._id && newMessage) {
@@ -70,28 +99,46 @@ const MessageList = props => {
       smooth: false,
       duration: 0
     });
-  }, [messages, otherTyping, isLoading]);
+  }, [isLoading]);
 
   return (
-    <div
-      className='bg-white flex-grow flex flex-col overflow-y-auto'
-      id='messages'
-    >
-      {isLoading ? (
-        <div className='spinner-md flex-grow'>A</div>
-      ) : (
-        messages.map(el => (
-          <SingleMessage
-            key={el._id || Date.now()}
-            name={props.name}
-            message={el}
-            myId={userId}
-          />
-        ))
-      )}
+    <>
+      {isLoadingMore ? (
+        <div className='bg-white w-full h-48 flex '>
+          <div className='spinner flex-grow'>A</div>
+        </div>
+      ) : null}
 
-      {otherTyping ? <TypingIndicator name={otherName} /> : null}
-    </div>
+      <div
+        className='bg-white flex-grow flex flex-col overflow-y-auto'
+        id='messages'
+        ref={messageListRef}
+        onScroll={e => {
+          console.log(e.target.scrollTop);
+          if (e.target.scrollTop === 0) {
+            if (lastIndex > 0) {
+              setLoadingMore(true);
+              loadMoreMessage(e);
+            }
+          }
+        }}
+      >
+        {isLoading ? (
+          <div className='spinner-md flex-grow'>A</div>
+        ) : (
+          messages.map(el => (
+            <SingleMessage
+              key={el._id || Date.now()}
+              name={props.name}
+              message={el}
+              myId={userId}
+            />
+          ))
+        )}
+
+        {otherTyping ? <TypingIndicator name={otherName} /> : null}
+      </div>
+    </>
   );
 };
 
