@@ -24,7 +24,7 @@ const MessageList = props => {
   useEffect(() => {
     setLoading(true);
     setMessages([]);
-
+    setLastIndex(-1);
     if (cvs._id) {
       const options = {
         uri: `${url.LOCAL}/api/get-messages?cid=${cvs._id}&last=-1`,
