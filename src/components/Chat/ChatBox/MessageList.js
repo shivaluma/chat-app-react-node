@@ -24,7 +24,7 @@ const MessageList = props => {
   useEffect(() => {
     setLoading(true);
     setMessages([]);
-
+    setLastIndex(-1);
     if (cvs._id) {
       const options = {
         uri: `${url.LOCAL}/api/get-messages?cid=${cvs._id}&last=-1`,
@@ -114,7 +114,7 @@ const MessageList = props => {
         id='messages'
         ref={messageListRef}
         onScroll={e => {
-          if (e.target.scrollTop === 0 && e.target.topHeight > 0) {
+          if (e.target.scrollTop === 0) {
             if (lastIndex > 0) {
               setLoadingMore(true);
               loadMoreMessage(e);
