@@ -5,9 +5,7 @@ import { GlobalContext } from '../../../contexts/ConversationState';
 import { history } from '../../../configs/browserHistory';
 import socket from '../../../configs/socket';
 const ListConversation = props => {
-  const { conversations, addConversation, getConversation } = useContext(
-    GlobalContext
-  );
+  const { conversations, addConversation, getConversation } = useContext(GlobalContext);
 
   const myUsername = localStorage.username;
   const myId = localStorage.userId;
@@ -34,17 +32,11 @@ const ListConversation = props => {
   return (
     <div className='bg-white flex flex-col items-center overflow-y-auto flex-grow'>
       <div className='w-full px-2 overflow-y-auto'>
-        {conversations.map(el => (
-          <Conversation
-            key={el._id}
-            conversation={el}
-            otherName={
-              myUsername === el.firstUserName
-                ? el.secondUserName
-                : el.firstUserName
-            }
-          />
-        ))}
+        {conversations
+          .filter(el => el.lastMessage !== '')
+          .map(el => (
+            <Conversation key={el._id} conversation={el} otherName={myUsername === el.firstUserName ? el.secondUserName : el.firstUserName} />
+          ))}
       </div>
     </div>
   );

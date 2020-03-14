@@ -9,7 +9,7 @@ import { history } from '../../../configs/browserHistory';
 import socket from '../../../configs/socket';
 import ListSearchTile from './ListSearchTile';
 const ChatList = props => {
-  const { addConversation, getConversation } = useContext(GlobalContext);
+  const { updateConversation, getConversation } = useContext(GlobalContext);
   const [isSearchFocusing, updateSearchFocusing] = useState(false);
   const [isMouseOverResult, updateMouseOverResult] = useState(false);
 
@@ -62,11 +62,11 @@ const ChatList = props => {
 
       if (httpResponse.statusCode === 200) {
         const obj = JSON.parse(body);
-
+        console.log(obj.conversation);
         const newConversation = getConversation(obj.conversation._id);
         if (newConversation) {
         } else {
-          addConversation(obj.conversation);
+          updateConversation(obj.conversation);
           socket.emit('new-conversation', {
             conversation: obj.conversation,
             createId: localStorage.userId
@@ -86,20 +86,11 @@ const ChatList = props => {
   return (
     <div className='flex flex-col w-1/4 max-h-screen'>
       <Panel />
-      <SearchBar
-        searchOnFocus={searchOnFocus}
-        searchOutFocus={searchOutFocus}
-        searchPeople={fetchPeople}
-      />
+      <SearchBar searchOnFocus={searchOnFocus} searchOutFocus={searchOutFocus} searchPeople={fetchPeople} />
       {!isSearchFocusing && !isMouseOverResult ? (
         <ListConversation className='flex-grow' chatId={props.chatId} />
       ) : (
-        <ListSearchTile
-          className='flex-grow'
-          listResults={searchResult}
-          setMouse={setMouseOverResult}
-          openConversation={openConversation}
-        />
+        <ListSearchTile className='flex-grow' listResults={searchResult} setMouse={setMouseOverResult} openConversation={openConversation} />
       )}
     </div>
   );

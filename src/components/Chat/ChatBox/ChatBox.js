@@ -8,27 +8,15 @@ import EmojiPicker from './EmojiPicker';
 import { history } from '../../../configs/browserHistory';
 
 const ChatBox = ({ chatId, userId }) => {
-  const {
-    getConversation,
-    updateConversation,
-    addConversation,
-    addNewMessage,
-    isReady
-  } = useContext(GlobalContext);
+  const { getConversation, updateConversation, addConversation, addNewMessage, isReady } = useContext(GlobalContext);
   const cvs = getConversation(chatId);
-  const otherUsername =
-    (userId === cvs.firstId ? cvs.secondUserName : cvs.firstUserName) || '';
+  const otherUsername = (userId === cvs.firstId ? cvs.secondUserName : cvs.firstUserName) || '';
   useEffect(() => {
     if (isReady) {
       socket.on('receive-message', ({ conversation, newMessage }) => {
-        const cvs = getConversation(conversation._id);
-        if (cvs) {
-          if (localStorage.username === conversation.lastSender) return;
-          updateConversation(conversation);
-          addNewMessage({ conversation: conversation, message: newMessage });
-        } else {
-          addConversation(conversation);
-        }
+        if (localStorage.username === conversation.lastSender) return;
+        updateConversation(conversation);
+        addNewMessage({ conversation: conversation, message: newMessage });
       });
     }
   }, [isReady]);

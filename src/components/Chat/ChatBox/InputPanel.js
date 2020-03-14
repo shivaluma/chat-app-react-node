@@ -61,17 +61,14 @@ const InputPanel = ({ cid, uid }) => {
   };
 
   return (
-    <div
-      className='w-full max-w-full bg-white flex p-2'
-      style={{ maxHeight: 400 }}
-    >
+    <div className='w-full max-w-full bg-white flex p-2' style={{ maxHeight: 400 }}>
       <div className='flex-grow flex-shrink items-center flex'>
         <div
-          contentEditable={true}
+          contentEditable
           tabIndex='0'
           ref={chatFieldRef}
           className='px-4 py-3 w-full wrapper bg-gray-300 text-gray-900 focus:outline-none rounded-xl break-words overfl'
-          onChange={() => {
+          onInput={() => {
             socket.emit('user-typing-message', {
               cid: cid,
               uid: uid,
@@ -104,22 +101,13 @@ const InputPanel = ({ cid, uid }) => {
         </button>
       </div>
 
-      <button
-        className='flex-shrink-0 h-11 self-end py-3 mx-2 bg-blue-500 rounded-full focus:outline-none'
-        style={{ flexBasis: 100 }}
-        onClick={sendMessage}
-        disabled={isSending}
-      >
+      <button className='flex-shrink-0 h-11 self-end py-3 mx-2 bg-blue-500 rounded-full focus:outline-none' style={{ flexBasis: 100 }} onClick={sendMessage} disabled={isSending}>
         {isSending ? (
           <div className='spinner'>A</div>
         ) : (
           <div className='flex items-center justify-center text-white'>
             <span className='font-semibold mr-1 '>Send</span>
-            <svg
-              className='h-4 w-4 fill-current'
-              viewBox='0 0 1000 1000'
-              xmlns='http://www.w3.org/2000/svg'
-            >
+            <svg className='h-4 w-4 fill-current' viewBox='0 0 1000 1000' xmlns='http://www.w3.org/2000/svg'>
               <path d='M10,991.1l980-493.2L10,8.9l101.1,415.7l532.7,73.4l-532.7,70.5L10,991.1z' />
             </svg>
           </div>
