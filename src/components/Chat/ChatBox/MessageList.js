@@ -99,7 +99,7 @@ const MessageList = props => {
       smooth: false,
       duration: 0
     });
-  }, [isLoading, messages]);
+  }, [isLoading, messages, otherTyping]);
 
   return (
     <>
@@ -122,18 +122,7 @@ const MessageList = props => {
           }
         }}
       >
-        {isLoading ? (
-          <div className='spinner-md flex-grow'>A</div>
-        ) : (
-          messages.map(el => (
-            <SingleMessage
-              key={el._id || Date.now()}
-              name={props.name}
-              message={el}
-              myId={userId}
-            />
-          ))
-        )}
+        {isLoading ? <div className='spinner-md flex-grow'>A</div> : messages.map(el => <SingleMessage key={el._id || Date.now()} name={props.name} message={el} myId={userId} />)}
 
         {otherTyping ? <TypingIndicator name={otherName} /> : null}
       </div>
