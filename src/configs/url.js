@@ -1,6 +1,6 @@
 const url = {
-  BASE: 'https://chat-shivaluma.herokuapp.com',
-  LOCAL: 'https://chat-shivaluma.herokuapp.com'
+  BASE: 'https://artful-wind-271202.appspot.com',
+  LOCAL: 'https://artful-wind-271202.appspot.com'
 };
 
 export default url;
